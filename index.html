@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff8fb8" />
+  <title>4か国語 単語ゲーム</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="game-card" aria-live="polite">
+      <header class="game-header">
+        <div>
+          <p class="eyebrow">KOREAN · ENGLISH · CHINESE · JAPANESE</p>
+          <h1>4か国語 単語ゲーム</h1>
+        </div>
+        <button id="restartButton" class="icon-button" type="button" aria-label="最初からやり直す">
+          ↻
+        </button>
+      </header>
+
+      <div id="gameScreen">
+        <section class="stats" aria-label="ゲーム状況">
+          <div class="stat">
+            <span class="stat-label">問題</span>
+            <strong id="questionNumber">1 / 10</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">正解</span>
+            <strong id="score">0</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">正答率</span>
+            <strong id="accuracy">0%</strong>
+          </div>
+        </section>
+
+        <div class="progress-track" aria-hidden="true">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <section class="question-box">
+          <p id="questionInstruction" class="question-instruction"></p>
+          <div id="questionLanguages" class="language-tags"></div>
+          <div id="questionText" class="question-text"></div>
+          <p id="pronunciation" class="pronunciation"></p>
+        </section>
+
+        <section id="answers" class="answers" aria-label="選択肢"></section>
+
+        <div id="feedback" class="feedback" role="status"></div>
+
+        <button id="nextButton" class="primary-button hidden" type="button">
+          次の問題へ
+        </button>
+      </div>
+
+      <section id="resultScreen" class="result-screen hidden">
+        <div class="result-emoji">🎀</div>
+        <h2 id="resultTitle">おつかれさま！</h2>
+        <p id="resultMessage"></p>
+
+        <div class="result-score">
+          <span>正解数</span>
+          <strong id="finalScore">0 / 10</strong>
+          <span id="finalAccuracy">0%</span>
+        </div>
+
+        <div id="reviewArea" class="review-area hidden">
+          <h3>間違えた問題を復習しよう</h3>
+          <p id="reviewCount"></p>
+          <button id="reviewButton" class="primary-button" type="button">
+            復習モードを始める
+          </button>
+        </div>
+
+        <button id="playAgainButton" class="secondary-button" type="button">
+          もう一度10問に挑戦
+        </button>
+      </section>
+    </section>
+
+    <p class="footer-note">単語データは script.js から自由に追加・編集できます。</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
