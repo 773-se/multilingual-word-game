@@ -367,3 +367,27 @@ h1 {
     transition: none !important;
   }
 }
+
+
+.speak-button {
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 2px solid var(--pink-200);
+  border-radius: 999px;
+  color: var(--pink-600);
+  background: #fff;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(217, 79, 134, 0.1);
+}
+
+.speak-button:active {
+  transform: scale(0.98);
+}
+
+.speak-button.speaking {
+  color: #fff;
+  border-color: var(--pink-500);
+  background: var(--pink-500);
+}

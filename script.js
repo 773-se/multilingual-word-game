@@ -63,6 +63,7 @@ const questionInstructionEl = document.getElementById("questionInstruction");
 const questionLanguagesEl = document.getElementById("questionLanguages");
 const questionTextEl = document.getElementById("questionText");
 const pronunciationEl = document.getElementById("pronunciation");
+const speakButton = document.getElementById("speakButton");
 const answersEl = document.getElementById("answers");
 const feedbackEl = document.getElementById("feedback");
 const nextButton = document.getElementById("nextButton");
@@ -151,6 +152,61 @@ function generateQuestions() {
   return shuffle(generated);
 }
 
+
+const SPEECH_LANGUAGES = {
+  en: "en-US",
+  ko: "ko-KR",
+  zh: "zh-CN",
+  ja: "ja-JP"
+};
+
+function stopSpeech() {
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+  speakButton.classList.remove("speaking");
+  speakButton.textContent = "🔊 発音を聞く";
+}
+
+function speakCurrentQuestion() {
+  if (!("speechSynthesis" in window)) {
+    feedbackEl.textContent = "このブラウザでは音声読み上げに対応していません。";
+    feedbackEl.className = "feedback incorrect";
+    return;
+  }
+
+  stopSpeech();
+
+  const question = questions[currentIndex];
+  if (!question) return;
+
+  const utterances = question.fromLanguages.map((language) => {
+    const utterance = new SpeechSynthesisUtterance(question.word[language]);
+    utterance.lang = SPEECH_LANGUAGES[language];
+    utterance.rate = 0.82;
+    utterance.pitch = 1;
+    return utterance;
+  });
+
+  speakButton.classList.add("speaking");
+  speakButton.textContent = "🔊 再生中…";
+
+  utterances.forEach((utterance, index) => {
+    if (index === utterances.length - 1) {
+      utterance.onend = () => {
+        speakButton.classList.remove("speaking");
+        speakButton.textContent = "🔊 もう一度聞く";
+      };
+      utterance.onerror = () => {
+        speakButton.classList.remove("speaking");
+        speakButton.textContent = "🔊 発音を聞く";
+      };
+    }
+    window.speechSynthesis.speak(utterance);
+  });
+}
+
+
 function startGame() {
   questions = generateQuestions();
   currentIndex = 0;
@@ -185,6 +241,7 @@ function startReview() {
 }
 
 function renderQuestion() {
+  stopSpeech();
   const question = questions[currentIndex];
   answerLocked = false;
 
@@ -342,5 +399,6 @@ nextButton.addEventListener("click", goToNextQuestion);
 restartButton.addEventListener("click", startGame);
 playAgainButton.addEventListener("click", startGame);
 reviewButton.addEventListener("click", startReview);
+speakButton.addEventListener("click", speakCurrentQuestion);
 
 startGame();
